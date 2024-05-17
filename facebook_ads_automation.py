@@ -10,10 +10,10 @@ from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
 # Initialize Facebook Ads API
-app_id = ""
-app_secret = ""
-access_token = ""
-ad_account_id = ""
+app_id = "Facebook application ID"
+app_secret = "facebook app secret token"
+access_token = "here is the token of your Facebook application in production mode"
+ad_account_id = "act_ADVERTISING_ACCOUNT_ID" #act_+ Necessarily
 
 FacebookAdsApi.init(app_id, app_secret, access_token, api_version='v19.0')
 
@@ -35,14 +35,14 @@ def download_videos_from_drive(folder_id):
 # Function for creating a campaign
 def create_campaign(name):
     campaign = AdAccount(ad_account_id).create_campaign(
-        fields=[AdAccount.Field.id],  # изменение поля на 'id'
+        fields=[AdAccount.Field.id],
         params={
             "name": name, 
             "objective": "OUTCOME_TRAFFIC",
             "special_ad_categories": ["NONE"],
         },
     )
-    return campaign.get_id(), campaign  # возвращаем только id кампании
+    return campaign.get_id(), campaign
 
 # Function to create a set of ads
 def create_ad_sets(campaign_id, folder_name, videos):
@@ -89,15 +89,15 @@ def create_ad(ad_set_id, video_file):
     thumbnail = f'{video_file.split(".")[0]}.jpg'
     ad_creative = AdCreative(parent_id=ad_account_id)
     ad_creative[AdCreative.Field.object_story_spec] = {
-        "page_id": "",
+        "page_id": "ID of your Facebook page",
         "link_data": {
-            "link": "",
+            "link": "https://github.com/Anac0n6a",
             "message": "YOUR_PRIMARY_TEXT",
             "name": "YOUR_HEADLINE",
             "description": "YOUR_DESCRIPTION",
             "call_to_action": {
                 "type": "LEARN_MORE",
-                "value": {"link": ""},
+                "value": {"link": "https://github.com/Anac0n6a"},
             },
         },
     }
@@ -110,15 +110,15 @@ def create_ad(ad_set_id, video_file):
     ad[Ad.Field.object_story_spec] = ad_creative[AdCreative.Field.object_story_spec]
     ad[Ad.Field.thumbnail_url] = thumbnail
     ad[Ad.Field.video_id] = video_file
-    ad[Ad.Field.status] = "PAUSED"  
+    ad[Ad.Field.status] = "PAUSED"
     ad.remote_create(params={"file": video_path})
     os.remove(video_path)
 
 # Main function
 def main():
     drive_links = {
-        # "Campaign 1": "",
-        "Campaign 2": "",
+        # "Campaign 1": "Here are the folder IDs from Google Drive",
+        "The company name you need": "Here are the folder IDs from Google Drive",
     }
     for campaign_name, drive_link in drive_links.items():
         print("Campaign:", campaign_name)
